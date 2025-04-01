@@ -48,5 +48,5 @@ fn main() {
     let im_width: u32 = 256;
     let im_height: u32 = 256;
     let pixels = generate_img(im_width, im_height);
-    render_img(im_width, im_height, pixels, "test.png".to_string());
+    render_img(im_width, im_height, pixels, "assets/test.png".to_string());
 }
