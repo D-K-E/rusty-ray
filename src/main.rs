@@ -22,6 +22,8 @@ fn generate_img(img_width: u32, img_height: u32) -> Vec<Pixel> {
     result
 }
 
+
+
 fn main() {
     let im_width: u32 = 256;
     let im_height: u32 = 256;
