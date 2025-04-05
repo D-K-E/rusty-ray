@@ -10,6 +10,7 @@ use smol::{
     Executor,
     channel::{Receiver, Sender, unbounded},
     future::block_on,
+    stream::StreamExt,
 };
 // use std::future::{Future, FutureExt};
 
@@ -93,21 +94,12 @@ async fn collect_output<'tasklife>(
     quit: Sender<bool>,
     nb_tasks: &'tasklife usize,
 ) -> Vec<Pixel> {
-    let mut result = Vec::<Pixel>::new();
-    while result.len() < (*nb_tasks) {
-        match out_r.recv().await {
-            Ok(pix) => {
-                result.push(pix);
-            }
-            _ => (),
-        }
-    }
+    let result: Vec<Pixel> = out_r.collect().await;
     println!(
         "result filled: result len {}, nb_tasks {}",
         result.len(),
         *nb_tasks
     );
-    let _ = drop(out_r);
     let _ = quit.send(true).await;
     let _ = drop(quit);
     result

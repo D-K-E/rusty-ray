@@ -37,6 +37,7 @@ pub fn add_to_pipeline<
                 }
             }
             drop(out_sender);
+            println!("out sender dropped");
         })
         .detach();
     // notice that we are not returning the child scope join handler
