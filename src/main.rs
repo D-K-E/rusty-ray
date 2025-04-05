@@ -107,9 +107,9 @@ async fn collect_output<'tasklife>(
         result.len(),
         *nb_tasks
     );
-    out_r.close();
     let _ = drop(out_r);
     let _ = quit.send(true).await;
+    let _ = drop(quit);
     result
 }
 
