@@ -89,8 +89,8 @@ fn gen_imgraddata<'tasklife>(
 }
 
 async fn collect_output<'tasklife>(
-    out_r: &'tasklife Receiver<Pixel>,
-    quit: &'tasklife Sender<bool>,
+    out_r: Receiver<Pixel>,
+    quit: Sender<bool>,
     nb_tasks: &'tasklife usize,
 ) -> Vec<Pixel> {
     let mut result = Vec::<Pixel>::new();
@@ -108,9 +108,8 @@ async fn collect_output<'tasklife>(
         *nb_tasks
     );
     out_r.close();
-    drop(out_r);
-    quit.send(true).await;
-    drop(quit);
+    let _ = drop(out_r);
+    let _ = quit.send(true).await;
     result
 }
 
@@ -122,16 +121,11 @@ fn generate_img_concurrent(img_width: u32, img_height: u32) -> Vec<Pixel> {
     let bind = input_receive.clone();
     let out_receiver = add_to_pipeline(&q_r, imgrad2pix, bind, &mut ex);
     //
-    let result = block_on(ex.run(async { collect_output(&out_receiver, &q_s, &nb_tasks).await }));
+    let result = block_on(ex.run(async { collect_output(out_receiver, q_s, &nb_tasks).await }));
     while !ex.is_empty() {
         ex.try_tick();
     }
-    // input_send.close();
-    // drop(input_send);
-    out_receiver.close();
-    input_receive.close();
-    q_s.close();
-    q_r.close();
+    drop(input_receive);
     result
 }
 

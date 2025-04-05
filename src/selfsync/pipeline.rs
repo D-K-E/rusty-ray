@@ -1,16 +1,9 @@
 //! basic task pipelinening
-use smol::Executor;
-use smol::channel::Receiver;
-use smol::channel::Sender;
-use smol::channel::unbounded;
+use smol::{
+    Executor,
+    channel::{Receiver, unbounded},
+};
 use std::marker;
-
-async fn apply_send_task<Input: marker::Send, Output: marker::Send>(
-    task: fn(Input) -> Output,
-    input: &Receiver<Input>,
-    out: &Sender<Output>,
-) {
-}
 
 pub fn add_to_pipeline<
     'tasklife,
@@ -24,22 +17,26 @@ pub fn add_to_pipeline<
 ) -> Receiver<Output> {
     let (out_sender, out_receiver) = unbounded::<Output>();
 
-    let t = ex
+    let _ = ex
         .spawn(async move {
             println!("starting pipeline loop");
             loop {
+                // shutdown channel shouldn't block stuff until arrival
+                // so use try_recv
                 match quit.try_recv() {
-                    Ok(msg) => {
+                    Ok(_) => {
                         break;
                     }
                     _ => (),
                 }
+
+                // we should wait until input receiver gets something
                 match input.recv().await {
                     Ok(task_input) => {
                         let output = task(task_input);
                         let _ = out_sender.send(output).await;
                     }
-                    Err(err) => {
+                    Err(_) => {
                         if input.is_closed() {
                             println!("input closed");
                             break;
@@ -47,9 +44,8 @@ pub fn add_to_pipeline<
                     }
                 }
             }
-            out_sender.close();
-            println!("out sender closed");
             drop(out_sender);
+            println!("out sender closed");
         })
         .detach();
     // notice that we are not returning the child scope join handler
