@@ -114,9 +114,6 @@ fn generate_img_concurrent(img_width: u32, img_height: u32) -> Vec<Pixel> {
     let out_receiver = add_to_pipeline(&q_r, imgrad2pix, bind, &mut ex);
     //
     let result = block_on(ex.run(async { collect_output(out_receiver, q_s, &nb_tasks).await }));
-    while !ex.is_empty() {
-        ex.try_tick();
-    }
     drop(input_receive);
     result
 }
