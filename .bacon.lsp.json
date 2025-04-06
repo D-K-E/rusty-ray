@@ -1,0 +1,127 @@
+{
+  "rust-analyzer": {
+    "command": "rust-analyzer",
+    "root_dir": "%workspace_root%",
+    "settings": {
+      "cargo": {
+        "allFeatures": true,
+        "loadOutDirsFromCheck": true,
+        "runBuildScripts": true
+      },
+      "check": {
+        "command": "check",
+        "extraArgs": ["--target", "x86_64-unknown-linux-gnu"] // Adjust target as needed
+      },
+      "procMacro": {
+        "enable": true
+      },
+      "inlayHints": {
+        "enable": true,
+        "chainingHints": true,
+        "closureReturnTypeHints": true,
+        "lifetimeElisionHints": {
+          "enable": "always"
+        },
+        "parameterHints": true,
+        "typeHints": true
+      },
+      "lens": {
+        "enable": true,
+        "run": true,
+        "implementations": true,
+        "methodReferences": true,
+        "typeDefinition": true,
+        "structure": true
+      },
+      "imports": {
+        "granularity": {
+          "group": "crate"
+        },
+        "prefix": "self",
+        "preferNoStd": false
+      },
+      "diagnostics": {
+        "enable": true,
+        "experimentalCheckOnSave": true
+      },
+      "completion": {
+        "autoself": true,
+        "callable": {
+          "snippets": "fill_arguments"
+        },
+        "postfix": {
+          "enable": true
+        }
+      },
+      "assist": {
+        "importPrefix": "crate",
+        "expressionFillPlaceholders": true,
+        "generateFluentSetters": true,
+        "generateTryFrom": true,
+        "generateDebug": true,
+        "generateDefault": true,
+        "generatePartialEq": true,
+        "generatePartialOrd": true,
+        "generateOrd": true,
+        "generateFrom": true,
+        "generateInto": true,
+        "generateClone": true,
+        "generateCopy": true,
+        "generateHash": true,
+        "generateEq": true,
+        "generateBorrow": true,
+        "generateBorrowMut": true,
+        "generateAsRef": true,
+        "generateAsMut": true,
+        "generateDeref": true,
+        "generateDerefMut": true,
+        "generateIndex": true,
+        "generateIndexMut": true,
+        "generateFromStr": true,
+        "generateToString": true,
+        "generateFromIterator": true,
+        "generateExtend": true,
+        "generateIntoIterator": true,
+        "generateExtendFromSlice": true,
+        "generateExtendFromArray": true,
+        "generateExtendFromVec": true,
+        "generateExtendFromDeque": true,
+        "generateExtendFromLinkedList": true,
+        "generateExtendFromBTreeSet": true,
+        "generateExtendFromBTreeMap": true,
+        "generateExtendFromHashMap": true,
+        "generateExtendFromHashSet": true,
+        "generateExtendFromBinaryHeap": true,
+        "generateExtendFromString": true,
+        "generateExtendFromCow": true,
+        "generateExtendFromRc": true,
+        "generateExtendFromArc": true,
+        "generateExtendFromRefCell": true,
+        "generateExtendFromMutex": true,
+        "generateExtendFromRwLock": true,
+        "generateExtendFromCell": true,
+        "generateExtendFromUnsafeCell": true,
+        "generateExtendFromAtomicBool": true,
+        "generateExtendFromAtomicIsize": true,
+        "generateExtendFromAtomicUsize": true,
+        "generateExtendFromAtomicI8": true,
+        "generateExtendFromAtomicU8": true,
+        "generateExtendFromAtomicI16": true,
+        "generateExtendFromAtomicU16": true,
+        "generateExtendFromAtomicI32": true,
+        "generateExtendFromAtomicU32": true,
+        "generateExtendFromAtomicI64": true,
+        "generateExtendFromAtomicU64": true,
+        "generateExtendFromAtomicI128": true,
+        "generateExtendFromAtomicU128": true,
+        "generateExtendFromAtomicF32": true,
+        "generateExtendFromAtomicF64": true,
+        "generateExtendFromAtomicPtr": true,
+        "generateExtendFromAtomicOrdering": true,
+        "generateExtendFromAtomicFence": true,
+        "generateExtendFromAtomicMemoryOrder": true,
+        "generateExtendFromAtomicOrderingOrdering": true
+      }
+    }
+  }
+}
