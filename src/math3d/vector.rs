@@ -1,7 +1,7 @@
 //! basic vector related stuff
 
 use crate::math3d::constant::real;
-use nalgebra::base::{Matrix, Vector3};
+use nalgebra::base::{Vector3};
 use rust_decimal::Decimal;
 use rust_decimal::prelude::FromStr;
 use std::fmt;
