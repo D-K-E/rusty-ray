@@ -8,8 +8,8 @@ pub struct ImGradientData {
 impl ImGradientData {
     pub fn new(x: u32, y: u32, w: u32, h: u32) -> ImGradientData {
         ImGradientData {
-            x: x,
-            y: y,
+            x,
+            y,
             img_width: w,
             img_height: h,
         }

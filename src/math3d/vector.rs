@@ -29,6 +29,10 @@ impl Vec3d {
     pub fn from_scalar(v: real) -> Vec3d {
         Vec3d {data: Vector3::new(v,v,v)}
     }
+
+    pub fn from_xyz(x: real, y: real, z: real) -> Vec3d {
+        Vec3d {data: Vector3::new(x,y,z)}
+    }
     pub fn data(&self) -> Vector3<real> {
         self.data.clone()
     }

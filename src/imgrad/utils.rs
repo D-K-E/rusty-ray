@@ -5,6 +5,8 @@ use crate::{
         imtypes::{Pixel, Point2d},
     },
     imgrad::types::ImGradientData,
+    math3d::ray::Ray,
+    math3d::constant::real,
     selfsync::pipeline::add_to_pipeline,
 };
 use smol::{
@@ -18,15 +20,26 @@ pub fn imgrad2pix(imgrad: ImGradientData) -> Pixel {
     let y = imgrad.y();
     let img_width = imgrad.img_width();
     let img_height: u32 = imgrad.img_height();
-    let red_: f32 = (x as f32) / (img_width as f32);
-    let green_: f32 = (y as f32) / (img_height as f32);
-    let blue_: f32 = 0.25;
+    let red_: real = (x as real) / (img_width as real);
+    let green_: real = (y as real) / (img_height as real);
+    let blue_: real = 0.25;
     let red = red_ * 255.9;
     let green = green_ * 255.9;
-    let blue: f32 = blue_ * 255.9;
+    let blue: real = blue_ * 255.9;
     let data: image::Rgb<u8> = image::Rgb([red as u8, green as u8, blue as u8]);
-    let coord: Point2d = Point2d { x: x, y: y };
+    let coord: Point2d = Point2d { x, y };
     Pixel::new(data, coord)
+}
+
+pub fn imgrad2ray(imgrad: ImGradientData) -> Ray {
+    //
+    let x = imgrad.x();
+    let y = imgrad.y();
+    let img_width = imgrad.img_width();
+    let img_height: u32 = imgrad.img_height();
+    let u: real = (x as real) / (img_width as real);
+    let v: real = (y as real) / (img_height as real);
+
 }
 
 pub fn generate_img(img_width: u32, img_height: u32) -> Vec<Pixel> {
