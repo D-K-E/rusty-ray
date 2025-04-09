@@ -12,3 +12,5 @@ image = "0.25.6"
 smol = "2.0.2"
 nalgebra = "0.33.2"
 rust_decimal = {version="1.37.1", features=["macros"]}
+num-traits = "0.2.19"
+
