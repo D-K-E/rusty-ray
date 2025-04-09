@@ -1,7 +1,7 @@
 //! sphere object
-use crate::math3d::constant::real;
-use crate::math3d::ray::Ray;
-use crate::math3d::vector::Vec3d;
+use crate::domain::math3d::constant::real;
+use crate::domain::math3d::ray::Ray;
+use crate::domain::math3d::vector::Vec3d;
 use std::fmt;
 use std::fmt::Display;
 

@@ -1,6 +1,6 @@
 /// camera data module
-use crate::math3d::constant::real;
-use crate::math3d::vector::Vec3d;
+use crate::domain::math3d::constant::real;
+use crate::domain::math3d::vector::Vec3d;
 
 pub fn default_aspect_ratio() -> real {
     16.0 / 9.0

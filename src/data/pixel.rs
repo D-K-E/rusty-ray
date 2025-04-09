@@ -1,4 +1,5 @@
-//! image related types
+/// image data type Pixel
+
 use image;
 
 pub struct Point2d {

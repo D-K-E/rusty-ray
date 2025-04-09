@@ -1,8 +1,8 @@
 //! a simple ray implementation
-use crate::math3d::vector::Vec3d;
+use crate::domain::math3d::vector::Vec3d;
 use std::fmt;
 
-use crate::math3d::constant::real;
+use crate::domain::math3d::constant::real;
 use std::fmt::Display;
 
 #[derive(PartialEq)]

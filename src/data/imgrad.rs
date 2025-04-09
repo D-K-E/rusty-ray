@@ -1,4 +1,5 @@
-//
+/// image gradient data
+
 pub struct ImGradientData {
     x: u32,
     y: u32,

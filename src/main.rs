@@ -1,8 +1,9 @@
 //
 use rusty_ray::{
-    imgio::imrender::save_pixels,
-    imgrad::utils::{generate_img, generate_img_concurrent},
-    math3d::constant::real,
+    present::imrender::save_pixels,
+    domain::image::factory_v1::generate_img,
+    domain::image::factory_v2::generate_img_concurrent,
+    domain::math3d::constant::real,
 };
 // use std::future::{Future, FutureExt};
 

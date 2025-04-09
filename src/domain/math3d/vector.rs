@@ -1,7 +1,7 @@
 //! basic vector related stuff
 
-use crate::math3d::constant::real;
-use nalgebra::base::{Vector3};
+use crate::domain::math3d::constant::real;
+use nalgebra::base::Vector3;
 use rust_decimal::Decimal;
 use rust_decimal::prelude::FromStr;
 use std::fmt;
@@ -27,11 +27,15 @@ impl Vec3d {
         Vec3d { data: v }
     }
     pub fn from_scalar(v: real) -> Vec3d {
-        Vec3d {data: Vector3::new(v,v,v)}
+        Vec3d {
+            data: Vector3::new(v, v, v),
+        }
     }
 
     pub fn from_xyz(x: real, y: real, z: real) -> Vec3d {
-        Vec3d {data: Vector3::new(x,y,z)}
+        Vec3d {
+            data: Vector3::new(x, y, z),
+        }
     }
     pub fn data(&self) -> Vector3<real> {
         self.data.clone()
@@ -89,6 +93,11 @@ impl Vec3d {
     }
     pub fn norm(&self) -> real {
         let m = self.data().norm() as real;
+        m
+    }
+    pub fn to_unit(&self) -> Vec3d {
+        let norm = self.data().norm() as real;
+        let m = self.scalar_divide(norm);
         m
     }
 
