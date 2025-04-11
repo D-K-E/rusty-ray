@@ -5,7 +5,7 @@ use std::fmt;
 use crate::domain::math3d::constant::real;
 use std::fmt::Display;
 
-#[derive(PartialEq)]
+#[derive(PartialEq, Clone)]
 pub struct Ray {
     origin: Vec3d,
     direction: Vec3d,

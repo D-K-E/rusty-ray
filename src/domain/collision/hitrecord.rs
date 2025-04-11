@@ -3,6 +3,7 @@
 use crate::domain::math3d::vector::Vec3d;
 use crate::domain::math3d::constant::real;
 
+#[derive(Clone)]
 pub struct HitRecord {
     point: Vec3d,
     normal: Vec3d,
@@ -28,7 +29,7 @@ impl HitRecord {
         &self.normal
     }
 
-    pub fn distance(&self) -> f32 {
+    pub fn distance(&self) -> real {
         self.distance
     }
 }
