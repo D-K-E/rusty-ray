@@ -21,7 +21,7 @@ impl WaitGroup {
         *group_size = mg;
     }
     pub fn wait(&self) {
-        self.cond()
+        let _unused = self.cond()
             .wait_while(self.group_size_mutex().lock().unwrap(), |gsize| *gsize > 0);
     }
 

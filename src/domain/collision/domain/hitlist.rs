@@ -1,10 +1,9 @@
 //! hittable objects list
 
-use crate::domain::collision::hitrecord::HitRecord;
-use crate::domain::collision::hittable::Hittable;
+use crate::domain::collision::data::hitrecord::HitRecord;
+use crate::domain::collision::domain::hittable::Hittable;
 use crate::domain::math3d::constant::real;
 use crate::domain::math3d::ray::Ray;
-use smol::channel::Sender;
 
 pub struct Hittables {
     objects: Vec<Box<dyn Hittable>>,

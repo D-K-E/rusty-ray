@@ -3,12 +3,10 @@
 use smol::{
     Executor,
     channel::{Receiver, TryRecvError, unbounded},
-    stream::{Stream, StreamExt},
 };
 
 use std::marker;
 
-use crate::domain::selfsync::waitgroup::WaitGroup;
 
 pub fn fan_in<'tasklife, Input: marker::Send + 'tasklife>(
     quit: &'tasklife Receiver<bool>,
