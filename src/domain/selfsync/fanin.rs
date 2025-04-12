@@ -16,11 +16,10 @@ pub fn fan_in<'tasklife, Input: marker::Send + 'tasklife>(
     ex: &mut Executor<'tasklife>,
 ) -> Receiver<Input> {
     let (out_sender, out_receiver) = unbounded::<Input>();
-    let mut wg = WaitGroup::new();
-    wg.add_member(inputs.len() as i16);
-    for (i, chnl) in inputs.iter().enumerate() {
+    for chnl in inputs {
+        let o_s = out_sender.clone();
         let _ = ex
-            .spawn(async {
+            .spawn(async move {
                 //
                 loop {
                     if quit.is_closed() {
@@ -28,21 +27,17 @@ pub fn fan_in<'tasklife, Input: marker::Send + 'tasklife>(
                     }
                     match chnl.try_recv() {
                         Ok(j) => {
-                            let _ = out_sender.send(j).await;
+                            let _ = o_s.send(j).await;
                         }
                         Err(TryRecvError::Closed) => break,
                         Err(TryRecvError::Empty) => (),
                     }
                 }
-                wg.done();
+                drop(o_s);
             })
             .detach();
     }
-    let _ = ex
-        .spawn(async {
-            wg.wait();
-            drop(out_sender);
-        })
-        .detach();
+    drop(out_sender);
+    
     out_receiver
 }
