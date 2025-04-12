@@ -10,12 +10,12 @@ use std::marker;
 
 use crate::domain::selfsync::waitgroup::WaitGroup;
 
-pub fn fan_in<'tasklife, Input: marker::Send + 'tasklife, Output: marker::Send + 'tasklife>(
+pub fn fan_in<'tasklife, Input: marker::Send + 'tasklife>(
     quit: &'tasklife Receiver<bool>,
     inputs: Vec<Receiver<Input>>,
     ex: &mut Executor<'tasklife>,
-) -> Receiver<Output> {
-    let (out_sender, out_receiver) = unbounded::<Output>();
+) -> Receiver<Input> {
+    let (out_sender, out_receiver) = unbounded::<Input>();
     let mut wg = WaitGroup::new();
     wg.add_member(inputs.len() as i16);
     for (i, chnl) in inputs.iter().enumerate() {

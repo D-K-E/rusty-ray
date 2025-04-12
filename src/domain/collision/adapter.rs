@@ -2,8 +2,10 @@
 
 use crate::domain::collision::hitrecord::HitRecord;
 use crate::domain::collision::hittable::HitInput;
+use crate::domain::collision::hittable::Hittable;
+use std::marker::Send;
 
-pub fn is_hit(h: HitInput) -> (HitRecord, bool) {
+pub fn is_hit<T: Hittable+Clone+Send>(h: HitInput<T>) -> (HitRecord, bool) {
     let hobj = h.hittable_obj();
     let r = h.ray();
     let min_d = h.min_distance();

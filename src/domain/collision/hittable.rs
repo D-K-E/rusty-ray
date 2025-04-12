@@ -50,12 +50,12 @@ impl<T: Hittable + Clone + Send> HitInput<T> {
         &self.ray
     }
 
-    pub fn min_distance(&self) -> f32 {
-        self.min_distance
+    pub fn min_distance(&self) -> &real {
+        &self.min_distance
     }
 
-    pub fn max_distance(&self) -> f32 {
-        self.max_distance
+    pub fn max_distance(&self) -> &real {
+        &self.max_distance
     }
 }
 

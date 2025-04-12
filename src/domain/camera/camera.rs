@@ -6,14 +6,34 @@ use crate::domain::camera::camdata::{
 use crate::domain::math3d::constant::real;
 use crate::domain::math3d::ray::Ray;
 use crate::domain::math3d::vector::Vec3d;
+use std::fmt;
 use std::fmt::Display;
 
-#[derive(PartialEq, Display)]
+#[derive(PartialEq)]
 pub struct Camera {
     origin: Vec3d,
     lower_left_corner: Vec3d,
     horizontal: Vec3d,
     vertical: Vec3d,
+}
+
+impl Display for Camera {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(
+            f,
+            r#"<Camera> 
+            <origin>{}</origin> 
+            <lower_left_corner>{}</lower_left_corner> 
+            <horizontal>{}</horizontal> 
+            <vertical>{}</vertical> 
+            </Camera>"#
+            ,
+            self.origin(),
+            self.lower_left_corner(),
+            self.horizontal(),
+            self.vertical()
+        )
+    }
 }
 
 impl Camera {
