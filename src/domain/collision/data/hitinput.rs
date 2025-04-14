@@ -4,6 +4,7 @@ use crate::domain::collision::domain::hittable::Hittable;
 
 use crate::domain::math3d::ray::Ray;
 use crate::domain::math3d::constant::real;
+use std::marker::Send;
 
 pub struct HitInput<T: Hittable + Clone + Send> {
     hittable_obj: T,
