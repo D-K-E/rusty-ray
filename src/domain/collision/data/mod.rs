@@ -3,3 +3,4 @@
 pub mod hitrecord;
 pub mod hitinput;
 pub mod hitobject;
+pub mod sphere;

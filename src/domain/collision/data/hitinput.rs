@@ -1,20 +1,22 @@
 //! collision related data
 
+use crate::domain::collision::data::hitobject::HitObject;
 use crate::domain::collision::domain::hittable::Hittable;
 
-use crate::domain::math3d::ray::Ray;
 use crate::domain::math3d::constant::real;
+use crate::domain::math3d::ray::Ray;
 use std::marker::Send;
 
-pub struct HitInput<T: Hittable + Clone + Send> {
-    hittable_obj: T,
+#[derive(Clone, Send)]
+pub struct HitInput {
+    hittable_obj: HitObject,
     ray: Ray,
     min_distance: real,
     max_distance: real,
 }
 
-impl<T: Hittable + Clone + Send> HitInput<T> {
-    pub fn new(hittable_obj: T, ray: Ray, min_distance: real, max_distance: real) -> Self {
+impl HitInput {
+    pub fn new(hittable_obj: HitObject, ray: Ray, min_distance: real, max_distance: real) -> Self {
         Self {
             hittable_obj,
             ray,
@@ -22,7 +24,7 @@ impl<T: Hittable + Clone + Send> HitInput<T> {
             max_distance,
         }
     }
-    pub fn from_ref(h: &T, r: &Ray, mn_d: &real, mx_d: &real) -> Self {
+    pub fn from_ref(h: &HitObject, r: &Ray, mn_d: &real, mx_d: &real) -> Self {
         Self {
             hittable_obj: h.clone(),
             ray: r.clone(),
@@ -31,7 +33,7 @@ impl<T: Hittable + Clone + Send> HitInput<T> {
         }
     }
 
-    pub fn hittable_obj(&self) -> &T {
+    pub fn hittable_obj(&self) -> &HitObject {
         &self.hittable_obj
     }
 

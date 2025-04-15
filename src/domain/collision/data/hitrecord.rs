@@ -1,6 +1,7 @@
 //! a record object to hold info regarding collided objects
 
 use crate::domain::math3d::vector::Vec3d;
+use crate::domain::math3d::ray::Ray;
 use crate::domain::math3d::constant::real;
 
 #[derive(Clone)]
@@ -32,6 +33,26 @@ impl HitRecord {
     pub fn distance(&self) -> real {
         self.distance
     }
+
+    pub fn set_face_normal(&self, r: &Ray, ov: &Vec3d) -> Self {
+        //
+        let rd = r.direction();
+        let face_cond = rd.dot(&ov);
+        let is_cond = face_cond < 0.0;
+        if is_cond {
+            HitRecord::new(
+                self.point().clone(),
+                ov.clone(),
+                self.distance())
+        }else{
+            HitRecord::new(
+                self.point().clone(),
+                ov.scalar_multiply(-1.0),
+                self.distance())
+
+        }
+    }
 }
+
 
 

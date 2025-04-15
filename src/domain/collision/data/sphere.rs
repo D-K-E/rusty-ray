@@ -1,6 +1,5 @@
 //! sphere object
 use crate::domain::math3d::constant::real;
-use crate::domain::math3d::ray::Ray;
 use crate::domain::math3d::vector::Vec3d;
 use std::fmt;
 use std::fmt::Display;
@@ -35,17 +34,5 @@ impl Sphere {
 
     pub fn radius(&self) -> real {
         self.radius.clone()
-    }
-
-    pub fn is_hit(&self, r: &Ray) -> bool {
-        let origin = r.origin();
-        let center = self.center();
-        let direction = r.direction();
-        let dist_origin_to_center = origin.subtract(&center);
-        let discrim_a = direction.norm().powi(2);
-        let discrim_b = dist_origin_to_center.dot(&direction) * 2.0;
-        let discrim_c = dist_origin_to_center.norm().powi(2) - self.radius.powi(2);
-        let discrim = discrim_b.powi(2) - (4.0 * discrim_a * discrim_c);
-        discrim > 0.0
     }
 }
