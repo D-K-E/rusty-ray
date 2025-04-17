@@ -1,7 +1,6 @@
 //! collision related data
 
-use crate::domain::collision::data::hitobject::HitObject;
-use crate::domain::collision::domain::hittable::Hittable;
+use crate::domain::collision::traits::hitobject::HitObject;
 
 use crate::domain::math3d::constant::real;
 use crate::domain::math3d::ray::Ray;

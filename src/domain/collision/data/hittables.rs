@@ -1,21 +1,18 @@
 //! hittables
 
-use crate::domain::collision::traits::hittable::Hittable;
-use crate::domain::math3d::ray::Ray;
-use smol::channel::{unbounded, Receiver};
+use crate::domain::collision::data::hitobject::HitObject;
+use smol::channel::{Receiver, unbounded};
 
 pub struct Hittables {
-    objects: Vec<Box<dyn Hittable>>,
+    objects: Vec<HitObject>,
 }
 
 impl Hittables {
-    pub fn new(objects: Vec<Box<dyn Hittable>>) -> Self {
+    pub fn new(objects: Vec<HitObject>) -> Self {
         Self { objects }
     }
 
-    pub fn objects(&self) -> &Vec<Box<dyn Hittable>> {
+    pub fn objects(&self) -> &[HitObject] {
         &self.objects
     }
 }
-
-

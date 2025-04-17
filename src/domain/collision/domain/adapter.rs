@@ -1,11 +1,11 @@
 //! collision adapters
 
-use crate::domain::collision::data::hitrecord::HitRecord;
 use crate::domain::collision::data::hitinput::HitInput;
-use crate::domain::collision::domain::hittable::Hittable;
+use crate::domain::collision::data::hitrecord::HitRecord;
+use crate::domain::collision::traits::hittable::Hittable;
 use std::marker::Send;
 
-pub fn is_hit<T: Hittable+Clone+Send>(h: HitInput<T>) -> (HitRecord, bool) {
+pub fn is_hit<T: Hittable + Clone + Send>(h: HitInput<T>) -> (HitRecord, bool) {
     let hobj = h.hittable_obj();
     let r = h.ray();
     let min_d = h.min_distance();
