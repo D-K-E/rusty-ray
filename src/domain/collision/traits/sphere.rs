@@ -26,11 +26,11 @@ impl Hittable for Sphere {
             let hr = HitRecord::null();
             return (hr, false);
         } else {
-            let sqd = sqrt(discrim);
+            let sqd = discrim.sqrt();
             let root = (-hb - sqd) / rd_2;
             let nroot = (-hb + sqd) / rd_2;
-            let cond1 = (root < min_distance) || (max_distance < root);
-            let cond2 = (nroot < min_distance) || (max_distance < nroot);
+            let cond1 = (&root < min_distance) || (max_distance < &root);
+            let cond2 = (&nroot < min_distance) || (max_distance < &nroot);
             if cond1 {
                 if cond2 {
                     let hr = HitRecord::null();
@@ -40,7 +40,7 @@ impl Hittable for Sphere {
                     let hit_p_sc = hit_p.subtract(&origin);
                     let hnorm = hit_p_sc.scalar_divide(sr);
                     let h_rec = HitRecord::new(hit_p, hnorm, nroot);
-                    let h_rec_2 = h_rec.set_face_normal(r, hnorm);
+                    let h_rec_2 = h_rec.set_face_normal(r, &hnorm);
                     return (h_rec_2, true);
                 }
             } else {
@@ -48,7 +48,7 @@ impl Hittable for Sphere {
                 let hit_p_sc = hit_p.subtract(&origin);
                 let hnorm = hit_p_sc.scalar_divide(sr);
                 let h_rec = HitRecord::new(hit_p, hnorm, root);
-                let h_rec_2 = h_rec.set_face_normal(r, hnorm);
+                let h_rec_2 = h_rec.set_face_normal(r, &hnorm);
                 return (h_rec_2, true);
             }
         }

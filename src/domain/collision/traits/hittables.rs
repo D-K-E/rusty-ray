@@ -4,6 +4,7 @@ use crate::domain::math3d::ray::Ray;
 use crate::domain::math3d::constant::real;
 use crate::domain::collision::traits::hittable::Hittable;
 use crate::domain::collision::data::hittables::Hittables;
+use crate::domain::collision::data::hitrecord::HitRecord;
 
 impl Hittable for Hittables {
     fn is_hit(

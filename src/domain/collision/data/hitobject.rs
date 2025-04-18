@@ -1,18 +1,18 @@
 //! hit object
-use std::marker::Send;
+use crate::domain::collision::data::sphere::Sphere;
 use crate::domain::math3d::constant::real;
 use crate::domain::math3d::vector::Vec3d;
-use crate::domain::collision::data::sphere::Sphere;
 
+#[derive(Clone, PartialEq)]
 pub enum ObjectKind {
-    Sphere
+    Sphere,
 }
 
-#[derive(Clone, Send)]
-pub struct HitObject{
+#[derive(Clone, PartialEq)]
+pub struct HitObject {
     kind: ObjectKind,
     position: Vec3d,
-    radius: real
+    radius: real,
 }
 
 impl HitObject {
@@ -38,5 +38,3 @@ impl HitObject {
         self.kind.clone()
     }
 }
-
-

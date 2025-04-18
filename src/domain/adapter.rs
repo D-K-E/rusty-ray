@@ -4,7 +4,7 @@ use crate::data::pixel::{Pixel, Point2d};
 use crate::domain::camera::camdata::{
     default_camera_height, default_camera_origin, default_camera_v, default_lower_left_corner,
 };
-use crate::domain::collision::traits::sphere::Sphere;
+use crate::domain::collision::data::sphere::Sphere;
 use crate::domain::math3d::constant::real;
 use crate::domain::math3d::ray::Ray;
 use crate::domain::math3d::vector::Vec3d;

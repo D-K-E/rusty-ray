@@ -1,12 +1,11 @@
 //! collision related data
 
-use crate::domain::collision::traits::hitobject::HitObject;
+use crate::domain::collision::data::hitobject::HitObject;
 
 use crate::domain::math3d::constant::real;
 use crate::domain::math3d::ray::Ray;
-use std::marker::Send;
 
-#[derive(Clone, Send)]
+#[derive(Clone)]
 pub struct HitInput {
     hittable_obj: HitObject,
     ray: Ray,
