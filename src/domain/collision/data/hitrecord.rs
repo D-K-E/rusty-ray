@@ -1,25 +1,40 @@
 //! a record object to hold info regarding collided objects
 
-use crate::domain::math3d::vector::Vec3d;
-use crate::domain::math3d::ray::Ray;
 use crate::domain::math3d::constant::real;
+use crate::domain::math3d::ray::Ray;
+use crate::domain::math3d::vector::Vec3d;
 
 #[derive(Clone)]
 pub struct HitRecord {
     point: Vec3d,
     normal: Vec3d,
-    distance: real
+    distance: real,
 }
 
 impl HitRecord {
     pub fn new(point: Vec3d, normal: Vec3d, distance: real) -> Self {
-        Self { point, normal, distance }
+        Self {
+            point,
+            normal,
+            distance,
+        }
+    }
+    pub fn from_ref(point: &Vec3d, normal: &Vec3d, distance: &real) -> Self {
+        Self {
+            point: point.clone(),
+            normal: normal.clone(),
+            distance: distance.clone(),
+        }
     }
     pub fn null() -> Self {
         let d = real::MAX;
         let n = Vec3d::from_scalar(real::MAX);
         let p = Vec3d::from_scalar(real::MAX);
-        HitRecord {point: p, normal: n, distance: d}
+        HitRecord {
+            point: p,
+            normal: n,
+            distance: d,
+        }
     }
 
     pub fn point(&self) -> &Vec3d {
@@ -40,19 +55,13 @@ impl HitRecord {
         let face_cond = rd.dot(&ov);
         let is_cond = face_cond < 0.0;
         if is_cond {
-            HitRecord::new(
-                self.point().clone(),
-                ov.clone(),
-                self.distance())
-        }else{
+            HitRecord::new(self.point().clone(), ov.clone(), self.distance())
+        } else {
             HitRecord::new(
                 self.point().clone(),
                 ov.scalar_multiply(-1.0),
-                self.distance())
-
+                self.distance(),
+            )
         }
     }
 }
-
-
-

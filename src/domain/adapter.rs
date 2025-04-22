@@ -51,7 +51,7 @@ pub fn imgrad2ray(imgrad: ImGradientData) -> (Ray, Point2d) {
 pub fn ray2pixel_v1(ray_loc: (Ray, Point2d)) -> Pixel {
     let (r, loc) = ray_loc;
     let sphere = Sphere::new(Vec3d::from_xyz(0.0, 0.0, -1.0), 0.5);
-    let is_hit = sphere.is_hit(&r);
+    let is_hit = sphere.is_hit_dummy_v1();
     if is_hit {
         Pixel::from_rgb(1.0 * 255.9, 0.0, 0.0, loc)
     } else {
@@ -65,6 +65,16 @@ pub fn ray2pixel_v1(ray_loc: (Ray, Point2d)) -> Pixel {
         let red = v.x() * 255.9;
         let green = v.y() * 255.9;
         let blue = v.z() * 255.9;
+        Pixel::from_rgb(red, green, blue, loc)
+    }
+}
+
+pub fn ray2pixel_v2(ray_loc: (Ray, Point2d)) -> Pixel {
+    let (r, loc) = ray_loc;
+    let is_hit = sphere.is_hit_dummy_v1();
+    if is_hit {
+        Pixel::from_rgb(1.0 * 255.9, 0.0, 0.0, loc)
+    } else {
         Pixel::from_rgb(red, green, blue, loc)
     }
 }

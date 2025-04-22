@@ -35,4 +35,7 @@ impl Sphere {
     pub fn radius(&self) -> real {
         self.radius.clone()
     }
+    pub fn is_hit_dummy_v1(&self) -> bool {
+        true
+    }
 }

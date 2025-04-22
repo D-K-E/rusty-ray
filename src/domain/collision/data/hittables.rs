@@ -1,7 +1,6 @@
 //! hittables
 
 use crate::domain::collision::data::hitobject::HitObject;
-use smol::channel::{Receiver, unbounded};
 
 #[derive(Clone, PartialEq)]
 pub struct Hittables {
