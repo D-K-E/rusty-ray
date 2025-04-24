@@ -5,3 +5,4 @@ pub mod workerpool;
 pub mod collect;
 pub mod fanin;
 pub mod waitgroup;
+pub mod pump_value;

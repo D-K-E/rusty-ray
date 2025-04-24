@@ -7,8 +7,7 @@ use smol::{
 
 use std::marker;
 
-
-pub fn fan_in<'tasklife, Input: marker::Send + 'tasklife>(
+pub fn fan_in_v1<'tasklife, Input: marker::Send + 'tasklife>(
     quit: &'tasklife Receiver<bool>,
     inputs: Vec<Receiver<Input>>,
     ex: &mut Executor<'tasklife>,
@@ -36,6 +35,42 @@ pub fn fan_in<'tasklife, Input: marker::Send + 'tasklife>(
             .detach();
     }
     drop(out_sender);
-    
+
+    out_receiver
+}
+
+pub fn fan_in_tuple<
+    'tasklife,
+    Input_1: marker::Send + 'tasklife,
+    Input_2: marker::Send + 'tasklife,
+>(
+    quit: &'tasklife Receiver<bool>,
+    input_1: Receiver<Input_1>,
+    input_2: Receiver<Input_2>,
+    ex: &mut Executor<'tasklife>,
+) -> Receiver<(Input_1, Input_2)> {
+    let (out_sender, out_receiver) = unbounded::<(Input_1, Input_2)>();
+    let _ = ex
+        .spawn(async move {
+            //
+            loop {
+                if quit.is_closed() {
+                    break;
+                }
+                match input_1.try_recv() {
+                    Ok(j) => match input_2.try_recv() {
+                        Ok(i) => {
+                            let _ = out_sender.send((j, i)).await;
+                        }
+                        Err(TryRecvError::Closed) => break,
+                        Err(TryRecvError::Empty) => (),
+                    },
+                    Err(TryRecvError::Closed) => break,
+                    Err(TryRecvError::Empty) => (),
+                }
+            }
+        })
+        .detach();
+
     out_receiver
 }
