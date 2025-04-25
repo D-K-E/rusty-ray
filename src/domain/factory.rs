@@ -45,8 +45,8 @@ pub fn world_v1() -> Hittables {
     let c2 = Vec3d::from_xyz(0.0, -100.5, -1.0);
     let s1 = Sphere::new(c1, 0.5);
     let s2 = Sphere::new(c2, 100.0);
-    let h1 = HitObject::from_sphere(s1);
-    let h2 = HitObject::from_sphere(s2);
+    let h1 = HitObject::from_sphere(&s1);
+    let h2 = HitObject::from_sphere(&s2);
     let hit_objs = vec![h1, h2];
     let hits = Hittables::new(hit_objs);
     hits

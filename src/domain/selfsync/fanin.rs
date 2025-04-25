@@ -41,15 +41,15 @@ pub fn fan_in_v1<'tasklife, Input: marker::Send + 'tasklife>(
 
 pub fn fan_in_tuple<
     'tasklife,
-    Input_1: marker::Send + 'tasklife,
-    Input_2: marker::Send + 'tasklife,
+    Input1: marker::Send + 'tasklife,
+    Input2: marker::Send + 'tasklife,
 >(
     quit: &'tasklife Receiver<bool>,
-    input_1: Receiver<Input_1>,
-    input_2: Receiver<Input_2>,
+    input_1: Receiver<Input1>,
+    input_2: Receiver<Input2>,
     ex: &mut Executor<'tasklife>,
-) -> Receiver<(Input_1, Input_2)> {
-    let (out_sender, out_receiver) = unbounded::<(Input_1, Input_2)>();
+) -> Receiver<(Input1, Input2)> {
+    let (out_sender, out_receiver) = unbounded::<(Input1, Input2)>();
     let _ = ex
         .spawn(async move {
             //

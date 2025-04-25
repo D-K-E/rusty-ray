@@ -4,6 +4,7 @@ use smol::{
     Executor,
     channel::{Receiver, TryRecvError, unbounded},
 };
+use std::marker;
 
 pub fn pump_value_to_channel<'tasklife, Input_1: marker::Send + 'tasklife, Input_2>(
     quit: &'tasklife Receiver<bool>,

@@ -4,6 +4,7 @@ use crate::data::pixel::{Pixel, Point2d};
 use crate::domain::camera::camdata::{
     default_camera_height, default_camera_origin, default_camera_v, default_lower_left_corner,
 };
+use crate::domain::collision::data::hitrecord::HitRecord;
 use crate::domain::collision::data::hittables::Hittables;
 use crate::domain::collision::data::sphere::Sphere;
 use crate::domain::math3d::constant::real;
@@ -70,12 +71,26 @@ pub fn ray2pixel_v1(ray_loc: (Ray, Point2d)) -> Pixel {
     }
 }
 
-pub fn ray2pixel_v2(ray_loc: ((Ray, Point2d), &Hittables)) -> Pixel {
-    let ((r, loc), hs) = ray_loc;
-    let is_hit = sphere.is_hit_dummy_v1();
+pub fn hit_record2pixel_info(hit_out: ((HitRecord, bool), Point2d)) -> (Pixel, (bool, real)) {
+    let ((rec, is_hit), loc, ray) = hit_out;
+    let d = rec.distance();
+    let v1 = Vec3d::from_xyz(1.0, 1.0, 1.0);
     if is_hit {
-        Pixel::from_rgb(1.0 * 255.9, 0.0, 0.0, loc)
+        let pnormal = rec.normal();
+        let xyz = v1.add(&pnormal).scalar_multiply(0.5);
     } else {
-        Pixel::from_rgb(red, green, blue, loc)
+        let unit_direction = ray.direction().to_unit();
+        let yval = unit_direction.y();
+        let ntval = (yval + 1.0) * 0.5;
+        let one_min = 1.0 - ntval;
+        let v2 = Vec3d::from_xyz(0.5, 0.7, 1.0);
+        let cval = v1.scalar_multiply(one_min);
+        let oval = v2.scalar_multiply(ntval);
+        let xyz = cval.add(&oval);
     }
+    let red = xyz.x() * 255.9;
+    let green = xyz.y() * 255.9;
+    let blue = xyz.z() * 255.9;
+    let pix = Pixel::from_rgb(red, green, blue, loc);
+    (pix, (is_hit, d))
 }

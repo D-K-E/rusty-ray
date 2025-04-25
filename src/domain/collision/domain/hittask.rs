@@ -1,16 +1,15 @@
 //! hittable task
+use crate::data::pixel::Point2d;
 use crate::domain::collision::data::hitinput::HitInput;
-use crate::domain::collision::data::hitrecord::HitRecord;
 use crate::domain::collision::data::hitobject::HitObject;
+use crate::domain::collision::data::hitrecord::HitRecord;
 use crate::domain::collision::traits::hittable::Hittable;
 use crate::domain::math3d::constant::real;
 use crate::domain::math3d::ray::Ray;
 use smol::Executor;
 use smol::channel::Sender;
 
-
-
-pub fn is_hit_task(h: HitInput) -> (HitRecord, bool) {
+pub fn is_hit_task_v1(h: HitInput) -> (HitRecord, bool) {
     let hobj = h.hittable_obj();
     let r = h.ray();
     let min_d = h.min_distance();
@@ -19,6 +18,12 @@ pub fn is_hit_task(h: HitInput) -> (HitRecord, bool) {
 
     let tpl = hobj.is_hit(r, min_d, mx_d, hrec);
     tpl
+}
+
+pub fn is_hit_task_v2(hp: (HitInput, Point2d)) -> ((HitRecord, bool), Point2d) {
+    let (h, p) = hp;
+    let tpl = is_hit_task_v1(h);
+    (tpl, p)
 }
 
 pub fn spawn_is_hit<'tasklife>(
@@ -33,7 +38,7 @@ pub fn spawn_is_hit<'tasklife>(
     let input = HitInput::from_ref(hittable_obj, r, min_distance, max_distance);
     let _ = ex
         .spawn(async move {
-            let (hrec, is_h) = is_hit_task(input);
+            let (hrec, is_h) = is_hit_task_v1(input);
 
             if is_h {
                 let hit_tpl = (hrec, is_h);
