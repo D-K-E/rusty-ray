@@ -4,7 +4,7 @@ use image;
 
 use crate::domain::math3d::constant::real;
 
-#[derive(Clone, Hash, Eq)]
+#[derive(Clone, Hash, PartialEq, Eq)]
 pub struct Point2d {
     pub x: u32,
     pub y: u32,

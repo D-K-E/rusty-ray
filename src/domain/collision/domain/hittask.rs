@@ -1,11 +1,12 @@
 //! hittable task
-use crate::data::pixel::Point2d;
-use crate::domain::collision::data::hitinput::HitInput;
-use crate::domain::collision::data::hitobject::HitObject;
-use crate::domain::collision::data::hitrecord::HitRecord;
-use crate::domain::collision::traits::hittable::Hittable;
-use crate::domain::math3d::constant::real;
-use crate::domain::math3d::ray::Ray;
+use crate::domain::{
+    collision::{
+        data::{hitinput::HitInput, hitobject::HitObject, hitrecord::HitRecord},
+        traits::hittable::Hittable,
+    },
+    math3d::constant::real,
+    math3d::ray::Ray,
+};
 use smol::Executor;
 use smol::channel::Sender;
 
@@ -20,10 +21,12 @@ pub fn is_hit_task_v1(h: HitInput) -> (HitRecord, bool) {
     tpl
 }
 
-pub fn is_hit_task_v2(hp: (HitInput, Point2d)) -> ((HitRecord, bool), Point2d) {
-    let (h, p) = hp;
+pub fn is_hit_task_v2<SideArg1, SideArg2>(
+    hp: (HitInput, SideArg1, SideArg2),
+) -> ((HitRecord, bool), SideArg1, SideArg2) {
+    let (h, p, r) = hp;
     let tpl = is_hit_task_v1(h);
-    (tpl, p)
+    (tpl, p, r)
 }
 
 pub fn spawn_is_hit<'tasklife>(
@@ -31,7 +34,7 @@ pub fn spawn_is_hit<'tasklife>(
     r: &'tasklife Ray,
     min_distance: &'tasklife real,
     max_distance: &'tasklife real,
-    hit_rec: HitRecord,
+    _hit_rec: HitRecord,
     hit_sender: &'tasklife Sender<(HitRecord, bool)>,
     ex: &mut Executor<'tasklife>,
 ) {

@@ -1,15 +1,15 @@
 /// adapter objects
-use crate::data::imgrad::ImGradientData;
-use crate::data::pixel::{Pixel, Point2d};
+use crate::data::{
+    imgrad::ImGradientData,
+    pixel::{Pixel, Point2d},
+};
 use crate::domain::camera::camdata::{
     default_camera_height, default_camera_origin, default_camera_v, default_lower_left_corner,
 };
-use crate::domain::collision::data::hitrecord::HitRecord;
-use crate::domain::collision::data::hittables::Hittables;
-use crate::domain::collision::data::sphere::Sphere;
-use crate::domain::math3d::constant::real;
-use crate::domain::math3d::ray::Ray;
-use crate::domain::math3d::vector::Vec3d;
+use crate::domain::{
+    collision::data::{hitrecord::HitRecord, sphere::Sphere},
+    math3d::{constant::real, ray::Ray, vector::Vec3d},
+};
 use image;
 
 pub fn imgrad2pix(imgrad: ImGradientData) -> Pixel {
@@ -71,13 +71,11 @@ pub fn ray2pixel_v1(ray_loc: (Ray, Point2d)) -> Pixel {
     }
 }
 
-pub fn hit_record2pixel_info(hit_out: ((HitRecord, bool), Point2d)) -> (Pixel, (bool, real)) {
-    let ((rec, is_hit), loc, ray) = hit_out;
-    let d = rec.distance();
-    let v1 = Vec3d::from_xyz(1.0, 1.0, 1.0);
-    if is_hit {
+fn color_hit(rec: &HitRecord, ray: &Ray, v1: Vec3d, is_hit: &bool) -> Vec3d {
+    if *is_hit {
         let pnormal = rec.normal();
         let xyz = v1.add(&pnormal).scalar_multiply(0.5);
+        xyz
     } else {
         let unit_direction = ray.direction().to_unit();
         let yval = unit_direction.y();
@@ -87,7 +85,16 @@ pub fn hit_record2pixel_info(hit_out: ((HitRecord, bool), Point2d)) -> (Pixel, (
         let cval = v1.scalar_multiply(one_min);
         let oval = v2.scalar_multiply(ntval);
         let xyz = cval.add(&oval);
+        xyz
     }
+}
+
+pub fn hit_record2pixel_info(hit_out: ((HitRecord, bool), Point2d, Ray)) -> (Pixel, (bool, real)) {
+    let ((rec, is_hit), loc, ray) = hit_out;
+    let d = rec.distance();
+    let v1 = Vec3d::from_xyz(1.0, 1.0, 1.0);
+    let xyz = color_hit(&rec, &ray, v1, &is_hit);
+
     let red = xyz.x() * 255.9;
     let green = xyz.y() * 255.9;
     let blue = xyz.z() * 255.9;

@@ -1,10 +1,11 @@
 //
 use rusty_ray::{
-    present::imrender::save_pixels,
     domain::image::factory_v1::generate_img,
     domain::image::factory_v2::generate_img_concurrent as gen_img_concurrent_v2,
     // domain::image::factory_v3::generate_img_concurrent as gen_img_concurrent_v3,
+    domain::image::factory_v4::generate_img_concurrent as gen_img_concurrent_v4,
     domain::math3d::constant::real,
+    present::imrender::save_pixels,
 };
 // use std::future::{Future, FutureExt};
 
@@ -50,12 +51,8 @@ fn concurrent_main_v4() {
     println!("done")
 }
 
-
-
-
-
 fn main() {
     // sequential_main_v1();
     // concurrent_main_v2();
-    concurrent_main_v3();
+    concurrent_main_v4();
 }

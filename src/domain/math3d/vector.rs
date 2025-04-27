@@ -6,6 +6,8 @@ use rust_decimal::Decimal;
 use rust_decimal::prelude::FromStr;
 use std::fmt;
 use std::fmt::Display;
+use std::hash::Hash;
+use std::hash::Hasher;
 
 #[derive(Clone, Debug)]
 pub struct Vec3d {
@@ -136,5 +138,14 @@ impl PartialEq for Vec3d {
             result = result && (my_arr[i] == other_arr[i]);
         }
         result
+    }
+}
+
+impl Hash for Vec3d {
+    fn hash<H: Hasher>(&self, state: &mut H) {
+        // Feed the relevant fields into the hasher in a consistent order.
+        let dec_arr = self.to_decimal_array();
+
+        dec_arr.hash(state);
     }
 }

@@ -39,31 +39,42 @@ pub fn hit_concurrent_v1<'tasklife>(
 }
 
 pub fn hit_concurrent_v2<'tasklife>(
-    hitlist: &'tasklife Hittables,
-    min_distance: &'tasklife real,
-    max_distance: &'tasklife real,
+    hitlist: Hittables,
+    min_distance: real,
+    max_distance: real,
     nb_workers: usize,
-    ray_receiver: &'tasklife Receiver<(Ray, Point2d)>,
+    ray_receiver: Receiver<(Ray, Point2d)>,
     quit: &'tasklife Receiver<bool>,
     ex: &mut Executor<'tasklife>,
 ) -> Receiver<((HitRecord, bool), Point2d, Ray)> {
-    let (input_s, input_r) = unbounded::<(HitInput, Point2d)>();
-    let out_r = spawn_workers(nb_workers, quit, is_hit_task_v2, input_r, ex);
+    let (input_s, input_r) = unbounded::<(HitInput, Point2d, Ray)>();
+    let out_r = spawn_workers(
+        nb_workers,
+        quit,
+        is_hit_task_v2::<Point2d, Ray>,
+        input_r,
+        ex,
+    );
 
     let _ = ex.spawn(async move {
+        let min_d = min_distance;
+        let max_d = max_distance;
+        let hits = hitlist;
+        let ray_r = ray_receiver;
         loop {
             if quit.is_closed() {
                 break;
             }
-            match ray_receiver.try_recv() {
+            match ray_r.try_recv() {
                 Ok(r_tpl) => {
                     let send_clone = input_s.clone();
-                    for hit_object in hitlist.objects() {
-                        let (r, p) = r_tpl;
-                        let h_in = HitInput::from_ref(hit_object, &r, min_distance, max_distance);
+                    let (r, p) = r_tpl;
+                    for hit_object in hits.objects() {
+                        let h_in = HitInput::from_ref(hit_object, &r, &min_d, &max_d);
                         //
-                        let h_tpl = (h_in, p, r);
+                        let h_tpl = (h_in, p.clone(), r.clone());
                         let _ = send_clone.send(h_tpl).await;
+                        println!("sent hit input");
                     }
                 }
                 Err(TryRecvError::Closed) => break,

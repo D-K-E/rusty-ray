@@ -6,13 +6,17 @@ use smol::{
 };
 use std::marker;
 
-pub fn pump_value_to_channel<'tasklife, Input_1: marker::Send + 'tasklife, Input_2>(
+pub fn pump_value_to_channel<
+    'tasklife,
+    Input1: marker::Send + 'tasklife,
+    Input2: marker::Send + 'tasklife + Clone,
+>(
     quit: &'tasklife Receiver<bool>,
-    input_1: Receiver<Input_1>,
-    input_2: &'tasklife Input_2,
+    input_1: Receiver<Input1>,
+    input_2: Input2,
     ex: &mut Executor<'tasklife>,
-) -> Receiver<(&'tasklife Input_1, Input_2)> {
-    let (out_sender, out_receiver) = unbounded::<(Input_1, &'tasklife Input_2)>();
+) -> Receiver<(Input1, Input2)> {
+    let (out_sender, out_receiver) = unbounded::<(Input1, Input2)>();
     let _ = ex
         .spawn(async move {
             //
@@ -22,7 +26,7 @@ pub fn pump_value_to_channel<'tasklife, Input_1: marker::Send + 'tasklife, Input
                 }
                 match input_1.try_recv() {
                     Ok(j) => {
-                        let _ = out_sender.send((j, input_2)).await;
+                        let _ = out_sender.send((j, input_2.clone())).await;
                     }
                     Err(TryRecvError::Closed) => break,
                     Err(TryRecvError::Empty) => (),
